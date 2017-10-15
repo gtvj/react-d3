@@ -1,5 +1,6 @@
 import React from 'react';
-import { STYLES } from './VisualisationStyles';
+import { AnimatableCircle} from "./AnimatableCircle";
+import { AnimatableText } from "./AnimatableText";
 
 export class Visualisation extends React.Component {
     constructor(props) {
@@ -31,14 +32,8 @@ export class Visualisation extends React.Component {
                     </div>
                 </div>
                 <svg width={500} height={500}>
-                    <circle
-                        cx={250}
-                        cy={250}
-                        r={this.state.radius}
-                        style={STYLES.circle}
-                    />
-                    <text x="50.1%" y="50.8%" alignmentBaseline="middle" textAnchor="middle"
-                          style={STYLES.text}>{this.state.radius}</text>
+                    <AnimatableCircle radius={this.state.radius}/>
+                    <AnimatableText text={this.state.radius}/>
                 </svg>
             </div>
         );
