@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import { Visualisation } from './components/Visualisation';
+import { CircleAndText } from './components/CircleAndText';
 
-ReactDOM.render(<Visualisation/>, document.getElementById('react-container'));
+ReactDOM.render(<CircleAndText/>, document.getElementById('react-container'));
