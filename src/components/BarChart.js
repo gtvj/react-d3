@@ -1,20 +1,30 @@
 import React from 'react';
 
+const dimensions = {
+    chartSide: 500,
+    barWidth: 20,
+    paddingBetweenBars: 30,
+    chartMargins: 50,
+    textLabelOffsetX: 5,
+    textLabelOffsetY: 15
+
+};
+
 export class Bar extends React.Component {
     render() {
         return (
-            <svg width={this.dimensions.chartSide} height={this.dimensions.chartSide}>
+            <svg width={dimensions.chartSide} height={dimensions.chartSide}>
                 <g>
                     <rect
                         fill={"rgba(0,0,0,0.2"}
-                        x={this.props.i * (this.dimensions.barWidth + this.dimensions.paddingBetweenBars) + this.dimensions.chartMargins}
-                        y={this.dimensions.chartSide - this.props.d.size - this.dimensions.chartMargins}
+                        x={this.props.i * (dimensions.barWidth + dimensions.paddingBetweenBars) + dimensions.chartMargins}
+                        y={dimensions.chartSide - this.props.d.size - dimensions.chartMargins}
                         height={this.props.d.size}
-                        width={this.dimensions.barWidth}
+                        width={dimensions.barWidth}
                     />
                     <text
-                        x={this.props.i * (this.dimensions.barWidth + this.dimensions.paddingBetweenBars) + this.dimensions.chartMargins + this.dimensions.textLabelOffsetX}
-                        y={(this.dimensions.chartSide - this.dimensions.chartMargins) + this.dimensions.textLabelOffsetY}
+                        x={this.props.i * (dimensions.barWidth + dimensions.paddingBetweenBars) + dimensions.chartMargins + dimensions.textLabelOffsetX}
+                        y={(dimensions.chartSide - dimensions.chartMargins) + dimensions.textLabelOffsetY}
                         fontFamily="Helvetica"
                         fontSize="14"
                     >{this.props.d.name}
@@ -24,17 +34,8 @@ export class Bar extends React.Component {
         )
     }
 
-
     constructor() {
         super();
-        this.dimensions = {
-            chartSide: 500,
-            barWidth: 20,
-            paddingBetweenBars: 30,
-            chartMargins: 50,
-            textLabelOffsetX: 5,
-            textLabelOffsetY: 15
-        }
     }
 }
 
@@ -45,6 +46,11 @@ export class BarChart extends React.Component {
 
             <div>
                 <svg width={500} height={500}>
+                    <g
+                        id={'axis_y'}
+                        transform={`translate(${dimensions.chartMargins - 20},${dimensions.chartMargins - 150})`}
+                    >
+                    </g>
                     {
                         this.data.map((dataPoint, index) => <Bar key={index} d={dataPoint} i={index}/>)
                     }
@@ -53,10 +59,30 @@ export class BarChart extends React.Component {
         )
     }
 
+
+    componentDidMount() {
+
+        const y = d3.scaleLinear()
+            .rangeRound([dimensions.chartSide + dimensions.chartMargins, 0])
+            .domain([0, d3.max(this.data, d => {
+                return d.size
+            })]);
+
+        d3.select('#axis_y')
+            .append('g')
+            .call(d3.axisLeft(y))
+            .append('text')
+            .attr('transform', 'rotate(-90)')
+            .attr('y', 6)
+            .attr('dy', '0.71em')
+            .attr('text-anchor', 'end')
+            .text('Frequency');
+    }
+
     constructor() {
         super();
         this.data = [
-            { name: 'A', size: 150 },
+            { name: 'A', size: 10 },
             { name: 'B', size: 250 },
             { name: 'C', size: 350 },
             { name: 'D', size: 450 },

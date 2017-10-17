@@ -36,5 +36,17 @@ module.exports = {
                 loader: 'style-loader!css-loader!autoprefixer-loader!sass-loader'
             }
         ]
+    },
+    resolve: {
+        packageMains: [
+            'module', // adds check for 'module'
+            'webpack',
+            'browser',
+            'web',
+            'browserify',
+            ['jam', 'main'],
+            'main',
+        ]
     }
-};
+}
+;
